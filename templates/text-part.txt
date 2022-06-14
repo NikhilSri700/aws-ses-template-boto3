@@ -1,0 +1,11 @@
+Dear {{name}},
+This is a reminder that your GitHub account with {{username}} is not MFA
+enabled.
+Please enable MFA in your account, it will take hardly 5 minutes to activate MFA. Please refer this
+github url https://github.com/login/ to login.
+Accounts without MFA will be disabled after {{date}}.
+Configuring User MFA
+
+Your support is highly appreciable
+Thanks in advance,
+GitHub Team.
