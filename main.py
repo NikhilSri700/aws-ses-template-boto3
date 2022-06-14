@@ -1,9 +1,10 @@
-'''
+"""
 Main python file for the project.
-'''
+"""
 
-import email_template as template
+from utils.template import Template
 
 # Program execution will start from here
 if __name__ == '__main__':
-    template.create('Test-Template', 'New Subject', 'This is the text part', 'This is the HTML part')
+    Template.create('Test-Template', 123, 'This is the text part', 'This is the HTML part')
+    # print(Template.list_all())
