@@ -62,5 +62,12 @@ class Template:
             print('Template deleted successfully')
 
     @staticmethod
+    def view(template_name):
+        try:
+            print(Template.ses.get_template(TemplateName=template_name))
+        except Template.ses.exceptions.TemplateDoesNotExistException:
+            print('Template does not exist')
+
+    @staticmethod
     def list_all():
         print(Template.ses.list_templates())
