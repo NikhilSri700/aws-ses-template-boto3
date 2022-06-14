@@ -35,7 +35,7 @@ class Template:
     @staticmethod
     def update(template_name, subject, text, html):
         try:
-            Template.ses.create_template(
+            Template.ses.update_template(
                 Template={
                     'TemplateName': template_name,
                     'SubjectPart': subject,
@@ -51,6 +51,15 @@ class Template:
             print("Invalid Parameters passed")
         else:
             print("Template Updated Successfully")
+
+    @staticmethod
+    def delete(template_name):
+        try:
+            Template.ses.delete_template(TemplateName=template_name)
+        except Exception as error:
+            print(f'Exception occurred: {error}')
+        else:
+            print('Template deleted successfully')
 
     @staticmethod
     def list_all():
