@@ -12,6 +12,13 @@ class Email:
 
     @staticmethod
     def verify_identity(email):
+        """
+        Function that will send a verification email to the email addresses provided to register that email as a
+        verified identity.
+        :param email: str
+            E-mail address that needs to be verified
+        :return: None
+        """
         try:
             Email.ses.verify_email_identity(EmailAddress=email)
         except Exception as error:

@@ -11,9 +11,14 @@ class Template(Config):
     # AWS SES client created using the default credentials configured for AWS CLI
     ses = boto3.client('ses')
 
-    # Create Email Template
     @staticmethod
     def create_or_update():
+        """
+        Static function that is used to create or update all the templates stored in 'config_template.json'.
+        It will iterate through all the templates one by one, and if that template is new then it will create that
+        template, and if it already exists then it will update that template.
+        :return: None
+        """
         Template.load_json()
 
         for templateId, template in Template.all_templates.items():
@@ -28,29 +33,14 @@ class Template(Config):
             except botocore.exceptions.ParamValidationError:
                 print(f"Invalid Parameters passed for {templateId}")
 
-    # Update Email Template
-    @staticmethod
-    def update(template_name, subject, text, html):
-        try:
-            Template.ses.update_template(
-                Template={
-                    'TemplateName': template_name,
-                    'SubjectPart': subject,
-                    'TextPart': text,
-                    'HtmlPart': html
-                }
-            )
-        except Template.ses.exceptions.TemplateDoesNotExistException:
-            print('Template does not exist')
-        except Template.ses.exceptions.InvalidTemplateException:
-            print("Invalid Template")
-        except botocore.exceptions.ParamValidationError:
-            print("Invalid Parameters passed")
-        else:
-            print("Template Updated Successfully")
-
     @staticmethod
     def delete(template_name):
+        """
+        Static function that will delete a template.
+        :param template_name: str
+            Name of the template that will be deleted.
+        :return: None
+        """
         try:
             Template.ses.delete_template(TemplateName=template_name)
         except Exception as error:
@@ -60,6 +50,12 @@ class Template(Config):
 
     @staticmethod
     def view(template_name):
+        """
+        Static function that will give details about a template.
+        :param template_name: str
+            Name of the template that will be described.
+        :return: None
+        """
         try:
             print(Template.ses.get_template(TemplateName=template_name))
         except Template.ses.exceptions.TemplateDoesNotExistException:
@@ -67,4 +63,8 @@ class Template(Config):
 
     @staticmethod
     def list_all():
+        """
+        Static function that will list all the email templates stored in AWS SES.
+        :return: None
+        """
         print(Template.ses.list_templates())

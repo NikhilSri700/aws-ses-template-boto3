@@ -10,6 +10,10 @@ class Config:
 
     @staticmethod
     def load_json():
-        with open("config/config_email_template.json", "r") as configFile:
+        """
+        Method that will load all the templates from 'config_template.json' to a python dictionary (all_templates).
+        :return: None
+        """
+        with open("config/config_template.json", "r") as configFile:
             Config.all_templates = json.load(configFile)
 
