@@ -4,32 +4,29 @@ Module for AWS SES templating.
 
 import boto3
 import botocore
+from utils.config import Config
 
 
-class Template:
+class Template(Config):
     # AWS SES client created using the default credentials configured for AWS CLI
     ses = boto3.client('ses')
 
     # Create Email Template
     @staticmethod
-    def create(template_name, subject, text, html):
-        try:
-            Template.ses.create_template(
-                Template={
-                    'TemplateName': template_name,
-                    'SubjectPart': subject,
-                    'TextPart': text,
-                    'HtmlPart': html
-                }
-            )
-        except Template.ses.exceptions.AlreadyExistsException:
-            print('Template Already exist')
-        except Template.ses.exceptions.InvalidTemplateException:
-            print("Invalid Template")
-        except botocore.exceptions.ParamValidationError:
-            print("Invalid Parameters passed")
-        else:
-            print("Template Created Successfully")
+    def create_or_update():
+        Template.load_json()
+
+        for templateId, template in Template.all_templates.items():
+            try:
+                Template.ses.create_template(Template=template)
+                print(f"Template \'{template['TemplateName']}\' Created Successfully")
+            except Template.ses.exceptions.AlreadyExistsException:
+                Template.ses.update_template(Template=template)
+                print(f"Template \'{template['TemplateName']}\' already exist, updated successfully")
+            except Template.ses.exceptions.InvalidTemplateException:
+                print(f"Invalid Template: {templateId}")
+            except botocore.exceptions.ParamValidationError:
+                print(f"Invalid Parameters passed for {templateId}")
 
     # Update Email Template
     @staticmethod
