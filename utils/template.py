@@ -65,6 +65,13 @@ class Template(Config):
     def list_all():
         """
         Static function that will list all the email templates stored in AWS SES.
-        :return: None
+        :return: List of all templates
         """
-        print(Template.ses.list_templates())
+        template_dict = Template.ses.list_templates()
+        template_list = []
+        for template in template_dict['TemplatesMetadata']:
+            template_list.append(template['Name'])
+
+        for counter in range(len(template_list)):
+            print(f'{counter+1}. {template_list[counter]}')
+        return template_list
