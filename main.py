@@ -17,18 +17,24 @@ def mail_body():
 # Program execution will start from here
 if __name__ == '__main__':
     text, html = mail_body()
+
     Email.verify_identity('nikhil.srivastav@watchguard.com')
-    # Template.create('Generic Github MFA', 'Enable MFA', text, html)
+
+    Template.create('Generic Github MFA', 'Enable MFA', text, html)
     # Template.view('Generic Github MFA')
+
     # print(Template.list_all())
+
     # Template.delete('Happy')
+
     # response = Template.ses.send_templated_email(
-    #     Source='thisisfordevelopment700@gmail.com',
+    #     Source='nikhil.srivastav@watchguard.com',
     #     Destination={
-    #         'ToAddresses': ['thisisfordevelopment700@gmail.com']
+    #         'ToAddresses': ['nikhil.srivastav@watchguard.com']
     #     },
-    #     ReplyToAddresses=['thisisfordevelopment700@gmail.com'],
+    #     ReplyToAddresses=['nikhil.srivastav@watchguard.com'],
     #     Template='Test-Template-1',
-    #     TemplateData='{"name": "Nikhil", "username": "nikhilsri700", "date": "10th July 2022"}'
+    #     TemplateData='{"name": "Nikhil", "username": "nsrivastav", "date": "10th July 2022"}'
     # )
+
     # print(response)
