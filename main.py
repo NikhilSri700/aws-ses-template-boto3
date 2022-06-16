@@ -49,25 +49,24 @@ def email_operations():
     while True:
         print("\nOptions for Emails")
         print("1. Verify Email Identity")
-        print("2. List all verified identities")
-        print("3. Send Templated Email")
-        print("4. Send Bulk Templated Emails")
-        print("5. Previous Menu")
-        print("6. Exit")
+        print("2. Send Templated Email")
+        print("3. Send Bulk Templated Emails")
+        print("4. Previous Menu")
+        print("5. Exit")
         email_choice = int(input("Enter the Choice: "))
 
         if email_choice == 1:
             email = input("Enter Email Address: ")
             Email.verify_identity(email)
         elif email_choice == 2:
-            pass
+            email = input("Enter source email Address: ")
+            Email.send_using_template(email)
         elif email_choice == 3:
-            pass
+            email = input("Enter source email Address: ")
+            Email.send_using_template(email, True)
         elif email_choice == 4:
-            pass
-        elif email_choice == 5:
             return
-        elif email_choice == 6:
+        elif email_choice == 5:
             exit()
         else:
             print("Wrong choice!")
