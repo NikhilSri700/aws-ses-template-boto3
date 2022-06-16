@@ -14,7 +14,7 @@ Python utility made using classes and modules to send personalized e-mails using
 ```
 * Configure set of templates that you want to create or update in `.\config\config_template.json` file.
 * Add all the email destinations for templated emails in `.\config\email_destinations.json` file.
-* Also add user data in that will be replaced in templated emails using placeholders in `.\config\user_data.json` file.
+* Also add user data that will be replaced in templated emails using placeholders in `.\config\user_data.json` file.
 * File run the main file from the project's root directory:
 ```commandline
     python main.py
