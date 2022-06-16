@@ -19,7 +19,7 @@ class Template(Config):
         template, and if it already exists then it will update that template.
         :return: None
         """
-        Template.load_json()
+        Template.load_template_json()
 
         for templateId, template in Template.all_templates.items():
             try:
