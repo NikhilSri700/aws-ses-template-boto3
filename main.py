@@ -7,6 +7,10 @@ from utils.template import Template
 
 
 def template_operations():
+    """
+    Function for menu on template operations.
+    :return: None
+    """
     while True:
         print("\nOperations on Templates")
         print("1. Create or Update Templates")
@@ -46,6 +50,10 @@ def template_operations():
 
 
 def email_operations():
+    """
+    Function for menu options for email.
+    :return: None
+    """
     while True:
         print("\nOptions for Emails")
         print("1. Verify Email Identity")
