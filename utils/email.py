@@ -15,7 +15,7 @@ class Email(Template):
 
     @staticmethod
     def check(email):
-        regex = '[a-zA-Z]+[A-Za-z0-9._%+-]+[a-zA-Z0-9]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}'
+        regex = '[a-zA-Z]+[A-Za-z0-9._%+-]+[a-zA-Z0-9]+@[A-Za-z0-9][A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}'
         if re.match(regex, email):
             return True
         else:
@@ -28,17 +28,31 @@ class Email(Template):
         verified identity.
         :param email: str
             E-mail address that needs to be verified
-        :return: None
+        :return: str
         """
         if Email.check(email):
             try:
                 Email.ses.verify_email_identity(EmailAddress=email)
             except Exception as error:
-                print(f'Exception occurred: {error}')
+                return f'Exception occurred: {error}'
             else:
-                print("Verification email sent, Please Verify")
+                return "Verification email sent, Please Verify"
         else:
-            print("Email Address is not Valid")
+            return "Email Address is not Valid"
+
+    @staticmethod
+    def delete_identity(identity):
+        """
+        Function will delete identity.
+        :param identity: identity that needs to be deleted
+        :return: str
+        """
+        try:
+            Email.ses.delete_identity(Identity=identity)
+        except Exception as error:
+            return f'Exception occurred: {error}'
+        else:
+            return "Identity deleted successfully"
 
     @staticmethod
     def send_using_template(source_email, bulk=False):
@@ -48,16 +62,18 @@ class Email(Template):
             Email address using which mails will be sent.
         :param bulk: bool
             Boolean parameter that will be responsible for choice between sending bulk emails or not.
-        :return: None
+        :return: str
         """
 
-        Email.load_jsons()
+        user_data = Email.load_json('config/user_data.json')
+        destinations = Email.load_json('config/email_destinations.json')
+
         template_list = Template.list_all()
         counter = 1
         destination_list = []
-        for destination in Email.destinations:
+        for destination in destinations:
             destination_list.append({"Destination": destination,
-                                     "ReplacementTemplateData": str(json.dumps(Email.user_data[counter - 1]))
+                                     "ReplacementTemplateData": str(json.dumps(user_data[counter - 1]))
                                      })
             counter += 1
         template_choice = int(input("Choose one template: "))
@@ -70,25 +86,25 @@ class Email(Template):
                     Destinations=destination_list,
                     Template=template_list[template_choice-1],)
             except Email.ses.exceptions.MessageRejected:
-                print("Message Rejected")
+                return "Message Rejected"
             except Email.ses.exceptions.MailFromDomainNotVerifiedException:
-                print("Email address is not verified, Verify using option 1 from Menu.")
+                return "Email address is not verified, Verify using option 1 from Menu."
             except Exception as error:
-                print(f"Exception Occurred: {error}")
+                return f"Exception Occurred: {error}"
             else:
-                print("All mails sent successfully")
+                return "All mails sent successfully"
         else:
             try:
                 Email.ses.send_templated_email(
                     Source=source_email,
-                    Destination=Email.destinations[0],
+                    Destination=destinations[0],
                     Template=template_list[template_choice-1],
-                    TemplateData=str(json.dumps(Email.user_data[0])))
+                    TemplateData=str(json.dumps(user_data[0])))
             except Email.ses.exceptions.MessageRejected:
-                print("Message Rejected")
+                return "Message Rejected"
             except Email.ses.exceptions.MailFromDomainNotVerifiedException:
-                print("Email address is not verified, Verify using option 1 from Menu.")
+                return "Email address is not verified, Verify using option 1 from Menu."
             except Exception as error:
-                print(f"Exception Occurred: {error}")
+                return f"Exception Occurred: {error}"
             else:
-                print("Mail sent successfully")
+                return "Mail sent successfully"
