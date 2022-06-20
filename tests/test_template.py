@@ -24,13 +24,13 @@ class TestTemplate(unittest.TestCase):
     def tearDownClass(cls):
         os.remove('sample.json')
 
-    def test_create_or_update(self):
+    def test_00_create_or_update(self):
         self.assertEqual(Template.create_or_update(self.sample_json), "Template 'Sample-Template' Created "
                                                                       "Successfully")
         self.assertEqual(Template.create_or_update(self.sample_json), "Template 'Sample-Template' already exist, "
                                                                       "updated successfully")
 
-    def test_delete(self):
+    def test_01_delete(self):
         self.assertEqual(Template.delete('Sample-Template'), 'Template deleted successfully')
 
 
