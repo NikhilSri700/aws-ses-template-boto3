@@ -3,7 +3,7 @@ Module for all the operations related to email.
 """
 
 import boto3
-import botocore
+import os
 import re
 from utils.template import Template
 import json
@@ -11,6 +11,11 @@ import json
 
 class Email(Template):
     # AWS SES client created using the default credentials configured for AWS CLI
+    current_directory = os.getcwd()
+    os.chdir('..')
+    current_directory = os.path.join(current_directory, 'config')
+    user_file = os.path.join(current_directory, 'user_data.json')
+    destination_file = os.path.join(current_directory, 'email_destinations.json')
     ses = boto3.client('ses')
 
     @staticmethod
@@ -54,8 +59,8 @@ class Email(Template):
         else:
             return "Identity deleted successfully"
 
-    @staticmethod
-    def send_using_template(source_email, bulk=False):
+    @classmethod
+    def send_using_template(cls, source_email, bulk=False):
         """
         Static function that will send templated emails using the already created templates with replacement data.
         :param source_email: str
@@ -65,8 +70,8 @@ class Email(Template):
         :return: str
         """
 
-        user_data = Email.load_json('config/user_data.json')
-        destinations = Email.load_json('config/email_destinations.json')
+        user_data = Email.load_json(cls.user_file)
+        destinations = Email.load_json(cls.destination_file)
 
         template_list = Template.list_all()
         counter = 1

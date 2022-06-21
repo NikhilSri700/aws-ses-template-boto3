@@ -4,15 +4,20 @@ Module for AWS SES templating.
 
 import boto3
 import botocore
+import os
 from utils.config import Config
 
 
 class Template(Config):
     # AWS SES client created using the default credentials configured for AWS CLI
     ses = boto3.client('ses')
+    current_directory = os.getcwd()
+    os.chdir('..')
+    current_directory = os.path.join(current_directory, 'config')
+    template_file = os.path.join(current_directory, 'config_template.json')
 
     @staticmethod
-    def create_or_update(template_json='config/config_template.json'):
+    def create_or_update(template_json=template_file):
         """
         Static function that is used to create or update all the templates stored in 'config_template.json'.
         It will iterate through all the templates one by one, and if that template is new then it will create that
