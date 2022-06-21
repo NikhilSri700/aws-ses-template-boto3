@@ -4,70 +4,79 @@ Module for AWS SES templating.
 
 import boto3
 import botocore
+import os
+from utils.config import Config
 
 
-class Template:
+class Template(Config):
     # AWS SES client created using the default credentials configured for AWS CLI
     ses = boto3.client('ses')
+    current_directory = os.getcwd()
+    os.chdir('..')
+    current_directory = os.path.join(current_directory, 'config')
+    template_file = os.path.join(current_directory, 'config_template.json')
 
-    # Create Email Template
     @staticmethod
-    def create(template_name, subject, text, html):
-        try:
-            Template.ses.create_template(
-                Template={
-                    'TemplateName': template_name,
-                    'SubjectPart': subject,
-                    'TextPart': text,
-                    'HtmlPart': html
-                }
-            )
-        except Template.ses.exceptions.AlreadyExistsException:
-            print('Template Already exist')
-        except Template.ses.exceptions.InvalidTemplateException:
-            print("Invalid Template")
-        except botocore.exceptions.ParamValidationError:
-            print("Invalid Parameters passed")
-        else:
-            print("Template Created Successfully")
+    def create_or_update(template_json=template_file):
+        """
+        Static function that is used to create or update all the templates stored in 'config_template.json'.
+        It will iterate through all the templates one by one, and if that template is new then it will create that
+        template, and if it already exists then it will update that template.
+        :return: str
+        """
+        all_templates = Template.load_json(template_json)
 
-    # Update Email Template
-    @staticmethod
-    def update(template_name, subject, text, html):
-        try:
-            Template.ses.update_template(
-                Template={
-                    'TemplateName': template_name,
-                    'SubjectPart': subject,
-                    'TextPart': text,
-                    'HtmlPart': html
-                }
-            )
-        except Template.ses.exceptions.TemplateDoesNotExistException:
-            print('Template does not exist')
-        except Template.ses.exceptions.InvalidTemplateException:
-            print("Invalid Template")
-        except botocore.exceptions.ParamValidationError:
-            print("Invalid Parameters passed")
-        else:
-            print("Template Updated Successfully")
+        for templateId, template in all_templates.items():
+            try:
+                Template.ses.create_template(Template=template)
+                return f"Template \'{template['TemplateName']}\' Created Successfully"
+            except Template.ses.exceptions.AlreadyExistsException:
+                Template.ses.update_template(Template=template)
+                return f"Template \'{template['TemplateName']}\' already exist, updated successfully"
+            except Template.ses.exceptions.InvalidTemplateException:
+                return f"Invalid Template: {templateId}"
+            except botocore.exceptions.ParamValidationError:
+                return f"Invalid Parameters passed for {templateId}"
 
     @staticmethod
     def delete(template_name):
+        """
+        Static function that will delete a template.
+        :param template_name: str
+            Name of the template that will be deleted.
+        :return: str
+        """
         try:
             Template.ses.delete_template(TemplateName=template_name)
         except Exception as error:
-            print(f'Exception occurred: {error}')
+            return f'Exception occurred: {error}'
         else:
-            print('Template deleted successfully')
+            return 'Template deleted successfully'
 
     @staticmethod
     def view(template_name):
+        """
+        Static function that will give details about a template.
+        :param template_name: str
+            Name of the template that will be described.
+        :return: str
+        """
         try:
-            print(Template.ses.get_template(TemplateName=template_name))
+            return Template.ses.get_template(TemplateName=template_name)
         except Template.ses.exceptions.TemplateDoesNotExistException:
-            print('Template does not exist')
+            return 'Template does not exist'
 
     @staticmethod
     def list_all():
-        print(Template.ses.list_templates())
+        """
+        Static function that will list all the email templates stored in AWS SES.
+        :return: List of all templates
+        """
+        template_dict = Template.ses.list_templates()
+        template_list = []
+        for template in template_dict['TemplatesMetadata']:
+            template_list.append(template['Name'])
+
+        for counter in range(len(template_list)):
+            print(f'{counter+1}. {template_list[counter]}')
+        return template_list

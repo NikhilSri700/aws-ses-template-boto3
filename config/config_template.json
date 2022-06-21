@@ -1,0 +1,14 @@
+{
+  "template-1": {
+    "TemplateName": "Generic-GitHub-MFA",
+    "SubjectPart": "Enable MFA for your GitHub Account",
+    "TextPart": "Dear {{name}},\nThis is a reminder that your GitHub account with {{username}} is not MFA enabled.\nPlease enable MFA in your account, it will take hardly 5 minutes to activate MFA. Please refer this github url https:\/\/github.com\/login\/ to login. Accounts without MFA will be disabled after {{date}}.\nConfiguring User MFA\n\nYour support is highly appreciable\nThanks in advance,\nGitHub Team.",
+    "HtmlPart": "<html><head></head><body>Dear {{name}},<br>This is a reminder that your GitHub account with {{username}} is not MFA enabled.<br>Please enable MFA in your account, it will take hardly 5 minutes to activate MFA. Please refer this github url https://github.com/login/ to login.<br>Accounts without MFA will be disabled after {{date}}.<br>Configuring User MFA<br><br>Your support is highly appreciable<br>Thanks in advance,<br>GitHub Team.<br></body></html>"
+  },
+  "template-2": {
+    "TemplateName": "Generic-GitHub-MFA-2",
+    "SubjectPart": "Enable MFA for your GitHub Account",
+    "TextPart": "Dear {{name}},\nThis is a reminder that your GitHub account with {{username}} is not MFA enabled.\nPlease enable MFA in your account, it will take hardly 5 minutes to activate MFA. Please refer this github url https:\/\/github.com\/login\/ to login. Accounts without MFA will be disabled after {{date}}.\nConfiguring User MFA\n\nYour support is highly appreciable\nThanks in advance,\nGitHub Team.",
+    "HtmlPart": "<html><head></head><body>Dear {{name}},<br>This is a reminder that your GitHub account with {{username}} is not MFA enabled.<br>Please enable MFA in your account, it will take hardly 5 minutes to activate MFA. Please refer this github url https://github.com/login/ to login.<br>Accounts without MFA will be disabled after {{date}}.<br>Configuring User MFA<br><br>Your support is highly appreciable<br>Thanks in advance,<br>GitHub Team.<br></body></html>"
+  }
+}

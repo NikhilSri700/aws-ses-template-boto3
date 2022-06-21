@@ -1,0 +1,24 @@
+[
+  {
+    "ToAddresses": [
+            "nikhil.srivastav@watchguard.com"
+        ],
+    "CcAddresses": [
+            "nikhil.srivastav@watchguard.com"
+        ],
+    "BccAddresses": [
+            "nikhil.srivastav@watchguard.com"
+        ]
+  },
+  {
+    "ToAddresses": [
+            "nikhil.srivastav@watchguard.com"
+        ],
+    "CcAddresses": [
+            "nikhil.srivastav@watchguard.com"
+        ],
+    "BccAddresses": [
+            "nikhil.srivastav@watchguard.com"
+        ]
+  }
+]
